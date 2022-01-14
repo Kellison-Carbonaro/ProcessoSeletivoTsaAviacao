@@ -127,4 +127,156 @@ foreach($conhecimentos as $k => $conhecimento) {
 
 print_r($conhecimentos);echo '<br>';
 print_r($conhecimentos2);
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>Banco de dados 1)a)</b><br><br>';
+    $banco = new Banco();
+    $conexao = $banco->conectar();
+    $sql = $conexao->prepare("SELECT nome
+                                FROM organizacao
+                                ORDER BY data_fundacao DESC
+                                LIMIT 1");
+    $sql->execute();
+    $resultado = $sql->fetchAll(PDO::FETCH_ASSOC)[0];       
+
+var_dump($resultado);
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>1)b)</b><br><br>';
+
+$banco = new Banco();
+$conexao = $banco->conectar();
+$sql = $conexao->prepare("SELECT nome
+                            FROM colaborador 
+                            ORDER BY salario DESC
+                            LIMIT 1");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC)[0];       
+
+var_dump($resultado);
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>1)c)</b><br><br>';
+
+$banco = new Banco();
+$conexao = $banco->conectar();
+$sql = $conexao->prepare("SELECT nome, DATE_FORMAT(data_nascimento, '%d/%m/%Y') AS data
+                            FROM colaborador 
+                            ORDER BY salario DESC");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);       
+
+print_r($resultado);
+
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>1)d)</b><br><br>';
+
+$banco = new Banco();
+$conexao = $banco->conectar();
+$sql = $conexao->prepare("SELECT TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE()) as idade
+                            FROM colaborador 
+                            ORDER BY data_nascimento ASC");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);       
+
+print_r($resultado);
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>1)e)</b><br><br>';
+
+$banco = new Banco();
+$conexao = $banco->conectar();
+$sql = $conexao->prepare("SELECT C.nome AS nome_funcionario, O.nome AS nome_organizacao
+                            FROM colaborador AS C
+                            JOIN organizacao AS O ON C.organizacao_id = O.id
+                            ORDER BY O.nome, C.nome");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);       
+
+print_r($resultado);
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>2)</b><br><br>';
+
+$banco = new Banco();
+$conexao = $banco->conectar();
+$sql = $conexao->prepare("SELECT MAX(C.salario) AS maior_salario, O.nome AS nome_organizacao
+                            FROM colaborador AS C
+                            JOIN organizacao AS O ON C.organizacao_id = O.id
+                            ORDER BY O.nome, C.nome");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);       
+
+print_r($resultado);
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>3)</b><br><br>';
+
+$banco = new Banco();
+$conexao = $banco->conectar();
+$sql = $conexao->prepare("SELECT MAX(C.salario) AS maior_salario, O.nome AS nome_organizacao
+                            FROM colaborador AS C
+                            JOIN organizacao AS O ON C.organizacao_id = O.id
+                            ORDER BY O.nome, C.nome
+                            LIMIT 1");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC)[0];       
+
+print_r($resultado);
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>4)</b><br><br>';
+
+$banco = new Banco();
+$conexao = $banco->conectar();
+$sql = $conexao->prepare("SELECT O.nome, AVG(salario) 
+                            FROM colaborador 
+                            JOIN organizacao AS O ON organizacao_id = O.id
+                            GROUP BY organizacao_id
+                            ORDER BY O.nome");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);       
+
+print_r($resultado);
+
+
+
+
+echo '<br><br>------------------------------------------------------------------<br><br>';
+echo '<b>5)</b><br><br>';
+
+$banco = new Banco();
+$conexao = $banco->conectar();
+$sql = $conexao->prepare("SELECT MIN(TIMESTAMPDIFF(YEAR, data_nascimento, CURDATE())) as idade
+                            FROM colaborador 
+                            ORDER BY data_nascimento ASC
+                            LIMIT 1");
+$sql->execute();
+$resultado = $sql->fetchAll(PDO::FETCH_ASSOC)[0];       
+
+print_r($resultado);
+
+
+class Banco {
+    public $msgErro = "";
+
+    public function conectar()
+    {
+        //Conexão do banco de dados
+        global $conexao;
+        global $msgErro;
+        $nome = "tsa_teste_backend_bd";
+        $host = "localhost";
+        $usuario = "root";
+        $senha = "";
+        try {
+            $conexao = new PDO("mysql:dbname=" . $nome . "; host=" . $host, $usuario, $senha);
+            return $conexao;
+        } catch (PDOException $e) {
+            return $msgErro = $e->getMessage();
+        }
+    }
+    
+}
 ?>
