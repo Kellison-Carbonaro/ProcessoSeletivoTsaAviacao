@@ -26,12 +26,6 @@ $funcionarios = [
         'organizacao' => '2',
         'salario' => '2000',
     ],
-    [
-        'nome' => 'Nathan',
-        'idade' => 24,
-        'organizacao' => '4',
-        'salario' => '3999.97',
-    ]
 ];
 
 $count = count($funcionarios);
@@ -67,12 +61,11 @@ $media = 0.0;
 for($i = 0; $i < $count; $i++){
 
     $total = $funcionarios[$i]['salario'] + $total;
-
-    if($i == $count-1){
-        $media = $total/$count;
-    }
     
 }
+
+$media = $total/$count;
+
 $media = number_format($media,2,",",".");
 echo 'A média salarial entre os '. $count .' funcionário é de R$'.$media;
 echo '<br><br>------------------------------------------------------------------<br><br>';
@@ -90,7 +83,7 @@ echo '<br><br>------------------------------------------------------------------
 echo '<b>Questão 3)</b><br><br>';
 $class = new Retorno();
 $class->setNome('Kellison');
-$class->setIdade('23');
+$class->setIdade(23);
 $class->setSexo('masculino');
 
 echo 'Meu nome é '.$class->getNome().' tenho '.$class->getIdade().' anos, sou do sexo '.$class->getSexo();
@@ -104,8 +97,9 @@ $pessoa = $pessoaFactory::create('Kellison', 'Desenvolvedor Web');
 print_r($pessoa->getNomeAndProfissao());
 echo '<br><br>------------------------------------------------------------------<br><br>';
 echo '<b>Questão 5)</b><br><br>';
-echo 'Inserir uma nova pessoa na lista de funcionarios com o salário com casa decimais para ver se o valor de retorno esta com 2 casa decimais
-igual o padrão monetário.<br>';
+echo 'Realiza a conferência do array e verifica se 18 é o menor numero do array.<br>';
+
+echo 'Realiza a conferência do array e verifica se 18 é o menor numero do array.<br>';
 //echo 'Inserir uma nova pessoa na lista de funcionarios com o salário com casa decimais para ver se o valor de retorno esta com 2 casa decimais
 //igual o padrão monetário.<br>';
 
